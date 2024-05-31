@@ -41,3 +41,20 @@ def text_node_to_html_node(text_node):
         return LeafNode("img", "", { "src": text_node.url, "alt": text_node.text })
     raise Exception("Text type unrecognized")
 
+def split_nodes_delimiter(old_nodes, delimiter, text_type):
+    new_nodes = []
+    for node in old_nodes:
+        if node.text_type != text_type_text:
+            new_nodes.append(node)
+            continue
+        splitted_text = node.text.split(delimiter)
+        if len(splitted_text) % 2 == 0:
+            raise Exception(f"Closing \'{delimiter}\'' delimiter not found")
+        splitted_nodes = []
+        for i in range(len(splitted_text)):
+            if splitted_text[i] == "":
+                continue
+            node_type = text_type if i % 2 != 0 else text_type_text
+            splitted_nodes.append(TextNode(splitted_text[i], node_type))
+        new_nodes.extend(splitted_nodes)
+    return new_nodes
