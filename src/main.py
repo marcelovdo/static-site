@@ -2,6 +2,7 @@ import os
 import shutil
 
 from textnode import TextNode
+from generate_page import generate_page
 
 def copy_dir(source, dest):
     if os.path.isfile(source):
@@ -19,5 +20,6 @@ def main():
     if os.path.exists(public_dir):
         shutil.rmtree(public_dir)
     copy_dir(static_dir, public_dir)
+    generate_page("content/index.md", "template.html", os.path.join(public_dir, "index.html"))
 
 main()
