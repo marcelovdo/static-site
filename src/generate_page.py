@@ -1,4 +1,5 @@
 import os
+import pathlib
 
 from markdown_to_html import markdown_to_html
 
@@ -33,3 +34,14 @@ def generate_page(from_path, template_path, dest_path):
     f.write(new_html)
     f.close()
 
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+    if os.path.isfile(dir_path_content):
+        dest_path = pathlib.Path(dest_dir_path)
+        generate_page(dir_path_content, template_path, str(dest_path.with_suffix(".html")))
+        return
+    if not os.path.exists(dest_dir_path):
+        os.makedirs(dest_dir_path)
+    elems = os.listdir(dir_path_content)
+    for elem in elems:
+        generate_pages_recursive(os.path.join(dir_path_content, elem), template_path, os.path.join(dest_dir_path, elem))
+    

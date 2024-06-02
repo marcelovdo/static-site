@@ -2,7 +2,7 @@ import os
 import shutil
 
 from textnode import TextNode
-from generate_page import generate_page
+from generate_page import generate_pages_recursive
 
 def copy_dir(source, dest):
     if os.path.isfile(source):
@@ -17,9 +17,11 @@ def copy_dir(source, dest):
 def main():
     static_dir = "static"
     public_dir = "public"
+    content_dir = "content"
+    template_file = "template.html"
     if os.path.exists(public_dir):
         shutil.rmtree(public_dir)
     copy_dir(static_dir, public_dir)
-    generate_page("content/index.md", "template.html", os.path.join(public_dir, "index.html"))
+    generate_pages_recursive(content_dir, template_file, public_dir)
 
 main()
